@@ -13,30 +13,26 @@ namespace BasicWCF {
     public interface IService1 {
 
         [OperationContract]
-        //[WebGet]
+        //[WebGet] 
         string GetData(int value);
 
         [OperationContract]
         //[WebInvoke]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
-        
-
-        // TODO: Add your service operations here
     }
 
     [ServiceContract]
     public interface IStreamService {
         [OperationContract]
-        [WebGet]
+        [WebGet] // to allow get request
         Stream GetStream();
 
-        [OperationContract,
-         WebGet(UriTemplate = "/crossdomain.xml")]
+        [OperationContract]
+        [WebGet(UriTemplate = "/crossdomain.xml")] 
         Stream GetPolicy();
     }
 
-    // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]
     public class CompositeType {
         bool boolValue = true;

@@ -9,7 +9,7 @@ using System.ServiceModel.Activation;
 
 namespace RESTfulWCF {
     
-    //[ServiceBehavior(InstanceContextMode=InstanceContextMode.PerCall)]
+    [ServiceBehavior(InstanceContextMode=InstanceContextMode.PerCall)]
     [AspNetCompatibilityRequirements(RequirementsMode=AspNetCompatibilityRequirementsMode.Allowed)] 
     public class EmployeeService : IEmployeeService {
         private Repository _repository = new Repository();
@@ -36,7 +36,7 @@ namespace RESTfulWCF {
 
         public Employee Resend(Employee employee) {
             if(employee == null)
-                employee = new Employee {Name ="ddd"};
+                employee = new Employee { Name ="ddd" };
             return employee;
         }
     }
