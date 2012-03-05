@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Http.SelfHost;
 using System.Web.Http;
 using System.Web.Http.Routing;
+using System.Web.UI.WebControls;
 
 namespace AspNetWebApiHost {
     class Program {
@@ -12,15 +13,15 @@ namespace AspNetWebApiHost {
             var config = new HttpSelfHostConfiguration("http://localhost:8081/");
             config.Routes.MapHttpRoute(
                 name:"Default API",
-                routeTemplate: "api/{controller}/{department}/{id}",
-                defaults: new { department= RouteParameter.Optional, id = RouteParameter.Optional }
+                routeTemplate: "{controller}/{id}/{action}",
+                defaults: new { id = RouteParameter.Optional, action = RouteParameter.Optional }
             );
 
             HttpSelfHostServer server = new HttpSelfHostServer(config);
             server.OpenAsync().Wait();
 
             Console.ReadLine();
-            server.Dispose();
+            server.CloseAsync().Wait();
         
         }
     }
