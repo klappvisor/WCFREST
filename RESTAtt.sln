@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RESTfulWCF", "RESTfulWCF\RE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetWebApiHost", "AspNetWebApiHost\AspNetWebApiHost.csproj", "{BB3CE7D1-8575-4716-B3C5-EADB2EFF8375}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{5705659A-90AD-49BC-8354-EB96FA6CA845}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{BB3CE7D1-8575-4716-B3C5-EADB2EFF8375}.Release|Mixed Platforms.Build.0 = Release|x86
 		{BB3CE7D1-8575-4716-B3C5-EADB2EFF8375}.Release|x86.ActiveCfg = Release|x86
 		{BB3CE7D1-8575-4716-B3C5-EADB2EFF8375}.Release|x86.Build.0 = Release|x86
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5705659A-90AD-49BC-8354-EB96FA6CA845}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

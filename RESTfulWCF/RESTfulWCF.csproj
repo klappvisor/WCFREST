@@ -53,7 +53,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EmployeeService.svc" />
+    <Content Include="TreeService.svc" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -63,14 +63,20 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmployeeService.svc.cs">
-      <DependentUpon>EmployeeService.svc</DependentUpon>
+    <Compile Include="TreeService.svc.cs">
+      <DependentUpon>TreeService.svc</DependentUpon>
     </Compile>
-    <Compile Include="IEmployeeService.cs" />
+    <Compile Include="ITreeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{5705659A-90AD-49BC-8354-EB96FA6CA845}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
