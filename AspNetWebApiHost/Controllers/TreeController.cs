@@ -11,13 +11,14 @@ namespace AspNetWebApiHost.Controllers {
     public class TreeController : ApiController {
         private static Repository _repository = new Repository();
 
-        [HttpGet, ActionName("")]
+        [HttpGet, ActionName("index")]
         public IEnumerable<Symptom> GetRootNodes()
         {
+            
             return _repository.GetRootNodes();
         }
 
-        [HttpGet]
+        [HttpGet, ActionName("index")]
         public Symptom GetNode(string nodeId)
         {
             Int32 id;

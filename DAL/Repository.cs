@@ -73,9 +73,9 @@ namespace DAL
         
         [DataMember]
         public String Name { get; set; }
-
+        [IgnoreDataMember]
         public Symptom Parent { get; set; }
-
+        [IgnoreDataMember]
         public Diagnosis Diagnosis {get; set;}
 
     }
