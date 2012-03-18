@@ -10,78 +10,72 @@ using System.Net.Http;
 
 namespace AspNetWebApiHost.Controllers {
     public class TreeController : ApiController {
-        private static Repository _repository = new Repository();
+        private readonly IStorage _storage;
+
+        public TreeController(IStorage storage) { _storage = storage; }
 
         [HttpGet, ActionName("index")]
-        public IEnumerable<Symptom> GetRootNodes() {
-
-            return _repository.GetRootNodes();
+        public IQueryable<Symptom> GetRootNodes() {
+            return _storage.GetRootNodes().AsQueryable();
         }
 
         [HttpGet, ActionName("index")]
-        public Symptom GetNode(string nodeId) {
-            Int32 id;
-            if (!Int32.TryParse(nodeId, out id)) {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            }
-            return _repository.GetNode(id);
+        public Symptom GetNode(Int32 nodeId) {
+            Symptom symptom = _storage.GetNode(nodeId);
+            if(symptom == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            return symptom;
         }
 
         [HttpGet, ActionName("children")]
-        public IEnumerable<Symptom> GetChildren(string nodeId) {
-            Int32 id;
-            if (!Int32.TryParse(nodeId, out id)) {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            }
-            return _repository.GetChildren(id);
+        public IEnumerable<Symptom> GetChildren(Int32 nodeId){
+            return _storage.GetChildren(nodeId);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("index")]
         public HttpResponseMessage<Symptom> AddRoot(Symptom symptom) {
             if (symptom == null) {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
-
-            var newSymptom = _repository.CreateNode(symptom.Name, null);
+            var newSymptom = _storage.CreateNode(symptom.Name, null);
             return BuildCreateMessage(newSymptom);
+        }
+
+        [HttpDelete, ActionName("index")]
+        public void DeleteNode(Int32 nodeId) {
+            _storage.Delete(nodeId);
         }
 
         [HttpPost, ActionName("children")]
-        public HttpResponseMessage<Symptom> AddChild(string nodeId, Symptom child) {
-            Int32 id;
-            if (child == null || !Int32.TryParse(nodeId, out id)) {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+        public HttpResponseMessage<Symptom> AddChild(Int32 nodeId, Symptom child) {
+            var parent = _storage.GetNode(nodeId);
+            if (parent == null) {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-            var parent = _repository.GetNode(id);
-            var newSymptom = _repository.CreateNode(child.Name, parent);
+            var newSymptom = _storage.CreateNode(child.Name, parent);
             return BuildCreateMessage(newSymptom);
         }
 
-        [HttpDelete]
-        public void DeleteNode(string nodeId) {
-            Int32 id;
-            if (!Int32.TryParse(nodeId, out id)) {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            }
-            _repository.Delete(id);
-        }
-
         [HttpGet, ActionName("diagnosis")]
-        public Diagnosis GetDiagnosis(string nodeId) {
-            Int32 id;
-            if (!Int32.TryParse(nodeId, out id)) {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+        public Diagnosis GetDiagnosis(Int32 nodeId){
+            Diagnosis diagnosis = _storage.GetDiagnosis(nodeId);
+            if (diagnosis == null) {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-            return _repository.GetDiagnosis(id);
+            return diagnosis;
         }
 
         [HttpPost, ActionName("diagnosis")]
-        public void SetDiagnosis(string nodeId, Diagnosis diagnosis) {
-            Int32 id;
-            if (!Int32.TryParse(nodeId, out id)) {
+        public void SetDiagnosis(Int32 nodeId, Diagnosis diagnosis) {
+            if (diagnosis == null) {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
-            _repository.SetDiagnosis(id, diagnosis);
+            _storage.SetDiagnosis(nodeId, diagnosis);
+        }
+
+        [HttpDelete, ActionName("diagnosis")]
+        public void DeleteDiagnosis(Int32 nodeId) {
+            _storage.Delete(nodeId);
         }
 
         private HttpResponseMessage<Symptom> BuildCreateMessage(Symptom s) {

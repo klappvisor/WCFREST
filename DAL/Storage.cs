@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace DAL
-{
-    public class Repository {
+namespace DAL {
+    public class Storage : IStorage {
         private static List<Symptom> _tree = new List<Symptom> {
             new Symptom { ID = 1, Name = "Node 1" },
             new Symptom { ID = 2, Name = "Node 2" },
@@ -14,7 +13,7 @@ namespace DAL
             new Symptom { ID = 4, Name = "Node 4" }
         };
 
-        public Repository() {
+        public Storage() {
             CreateNode("Child 1", _tree[1]);
             CreateNode("Child 2", _tree[1]);
             CreateNode("Child 3", _tree[1]);
@@ -42,13 +41,14 @@ namespace DAL
         }
 
         public void Delete(int nodeId) {
-            _tree.ForEach(x => {
-                if (x.Parent.ID == nodeId) {
-                    x.Parent = null;
-                }
-            });
+            var symptom = _tree.FirstOrDefault(x => x.ID == nodeId);
+            if (symptom == null)
+                return;
 
-            _tree.RemoveAll(x => x.ID == nodeId);
+            _tree.Where(x => x.Parent == symptom).ToList()
+                .ForEach(x => Delete(x.ID));
+
+            _tree.Remove(symptom);
         }
 
         public Diagnosis GetDiagnosis(int nodeId) {

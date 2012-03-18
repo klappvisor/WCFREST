@@ -25,8 +25,12 @@ namespace BasicWCF {
     [ServiceContract]
     public interface IStreamService {
         [OperationContract]
-        [WebGet] // to allow get request
-        Stream GetStream();
+        [WebGet(UriTemplate = "/{id}?format=wav")] // to allow get request
+        Stream GetWavStream(string id);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "/{id}?format=mp3")] // to allow get request
+        Stream GetMp3Stream(string id);
 
         [OperationContract]
         [WebGet(UriTemplate = "/crossdomain.xml")] 

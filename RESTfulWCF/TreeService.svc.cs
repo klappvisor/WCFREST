@@ -8,74 +8,76 @@ using System.Text;
 using System.ServiceModel.Activation;
 using DAL;
 using System.Web;
+using System.Net;
 
 namespace RESTfulWCF {
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class TreeService : ITreeService {
-        private static Repository _repository = new Repository();
+        private static Storage _storage = new Storage();
 
         public IEnumerable<Symptom> GetRootNodes() {
-            return _repository.GetRootNodes();
+            return _storage.GetRootNodes();
         }
 
         public Symptom GetNode(string nodeId) {
             Int32 id;
-            if(!Int32.TryParse(nodeId, out id)){
-                throw new HttpRequestValidationException();
+            if (!Int32.TryParse(nodeId, out id)) {
+                throw new WebFaultException(HttpStatusCode.BadRequest);
             }
-            return _repository.GetNode(id);
+            Symptom symptom = _storage.GetNode(id);
+            if (symptom == null) {
+                throw new WebFaultException(HttpStatusCode.NotFound);
+            }
+            return symptom;
         }
 
         public IEnumerable<Symptom> GetChildren(string nodeId) {
             Int32 id;
             if(!Int32.TryParse(nodeId, out id)){
-                throw new HttpRequestValidationException();
+                throw new WebFaultException(HttpStatusCode.BadRequest);
             }
-            return _repository.GetChildren(id);
+            return _storage.GetChildren(id);
         }
 
         public Symptom AddRoot(Symptom symptom) {
             if(symptom == null) {
-                throw new HttpRequestValidationException();
+                throw new WebFaultException(HttpStatusCode.BadRequest);
             }
-            return _repository.CreateNode(symptom.Name, null);
+            return _storage.CreateNode(symptom.Name, null);
         }
 
         public Symptom AddChild(string nodeId, Symptom child) {
             Int32 id;
             if (child == null || !Int32.TryParse(nodeId, out id)) {
-                throw new HttpRequestValidationException();
+                throw new WebFaultException(HttpStatusCode.BadRequest);
             }
-            var parent = _repository.GetNode(id);
-            return _repository.CreateNode(child.Name, parent);
+            var parent = _storage.GetNode(id);
+            return _storage.CreateNode(child.Name, parent);
         }
 
         public void DeleteNode(string nodeId) {
             Int32 id;
-            if (!Int32.TryParse(nodeId, out id))
-            {
-                throw new HttpRequestValidationException();
+            if (!Int32.TryParse(nodeId, out id)) {
+                throw new WebFaultException(HttpStatusCode.BadRequest);
             }
-            _repository.Delete(id);
+            _storage.Delete(id);
         }
 
         public Diagnosis GetDiagnosis(string nodeId) {
             Int32 id;
-            if (!Int32.TryParse(nodeId, out id))
-            {
-                throw new HttpRequestValidationException();
+            if (!Int32.TryParse(nodeId, out id)) {
+                throw new WebFaultException(HttpStatusCode.BadRequest);
             }
-            return _repository.GetDiagnosis(id);
+            return _storage.GetDiagnosis(id);
         }
 
         public void SetDiagnosis(string nodeId, Diagnosis diagnosis) {
             Int32 id;
-            if (!Int32.TryParse(nodeId, out id))
-            {
-                throw new HttpRequestValidationException();
+            if (!Int32.TryParse(nodeId, out id)) {
+                throw new WebFaultException(HttpStatusCode.BadRequest);
             }
-            _repository.SetDiagnosis(id, diagnosis);
+            _storage.SetDiagnosis(id, diagnosis);
         }
     }
 }
