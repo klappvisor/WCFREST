@@ -79,5 +79,13 @@ namespace RESTfulWCF {
             }
             _storage.SetDiagnosis(id, diagnosis);
         }
+
+        public void DeleteDiagnosis(String nodeId) {
+            Int32 id;
+            if (!Int32.TryParse(nodeId, out id)) {
+                throw new WebFaultException(HttpStatusCode.BadRequest);
+            }
+            _storage.SetDiagnosis(id, null);
+        }
     }
 }

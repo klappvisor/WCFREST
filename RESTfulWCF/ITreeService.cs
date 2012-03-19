@@ -12,36 +12,31 @@ namespace RESTfulWCF {
 
     [ServiceContract]
     public interface ITreeService {
-        [OperationContract]
-        [WebGet(UriTemplate="/")]
+        [OperationContract, WebGet(UriTemplate="/")]
         IEnumerable<Symptom> GetRootNodes();
 
-        [OperationContract]
-        [WebInvoke(UriTemplate = "/", Method = "POST")]
+        [OperationContract, WebInvoke(UriTemplate = "/", Method = "POST")]
         Symptom AddRoot(Symptom employee);
 
-        [OperationContract] 
-        [WebGet(UriTemplate = "/{nodeId}")]
+        [OperationContract, WebGet(UriTemplate = "/{nodeId}")]
         Symptom GetNode(String nodeId);
 
-        [OperationContract]
-        [WebInvoke(UriTemplate = "/{nodeId}", Method = "DELETE")]
+        [OperationContract, WebInvoke(UriTemplate = "/{nodeId}", Method = "DELETE")]
         void DeleteNode(String nodeId);
 
-        [OperationContract]
-        [WebGet(UriTemplate = "/{nodeId}/children")]
+        [OperationContract, WebGet(UriTemplate = "/{nodeId}/children")]
         IEnumerable<Symptom> GetChildren(String nodeId);
 
-        [OperationContract]
-        [WebInvoke(UriTemplate = "/{nodeId}/children", Method="POST")]
+        [OperationContract, WebInvoke(UriTemplate = "/{nodeId}/children", Method="POST")]
         Symptom AddChild(String nodeId, Symptom child);
 
-        [OperationContract]
-        [WebInvoke(UriTemplate = "/{nodeId}/diagnosis", Method = "POST")]
+        [OperationContract, WebGet(UriTemplate = "/{nodeId}/diagnosis")]
+        Diagnosis GetDiagnosis(String nodeId);
+
+        [OperationContract, WebInvoke(UriTemplate = "/{nodeId}/diagnosis", Method = "POST")]
         void SetDiagnosis(String nodeId, Diagnosis diagnosis);
 
-        [OperationContract]
-        [WebInvoke(UriTemplate = "/{nodeId}/diagnosis", Method = "DELETE")]
-        Diagnosis GetDiagnosis(String nodeId);
+        [OperationContract, WebInvoke(UriTemplate = "/{nodeId}/diagnosis", Method = "DELETE")]
+        void DeleteDiagnosis(String nodeId);
     }
 }
